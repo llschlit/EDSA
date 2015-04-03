@@ -1,0 +1,10 @@
+DROP TABLE flat_file CASCADE;
+DROP TABLE experiment CASCADE;
+DROP TYPE storage_type;
+DROP TABLE permissions CASCADE;
+DROP TABLE permission_type CASCADE;
+DROP TYPE permissions_group;
+DROP TABLE file_type CASCADE;
+DROP TABLE project CASCADE;
+DROP TABLE data_type CASCADE;
+DROP TABLE edsa_user CASCADE;
