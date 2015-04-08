@@ -29,15 +29,15 @@ INSERT INTO data_type VALUES
 (3,   'xyz');
 
 INSERT INTO experiment VALUES
-(10000, 100,  'exp1',   1,  'table',  'good set'),
-(10001, 100,  'exp2',   1,  'table',  'foo'),
-(10002, 100,  'exp3',   1,  'table',  'bar'),
-(10003, 101,  'exp1',   1,  'table',  NULL),
-(10004, 101,  'exp2',   1,  'table',  NULL),
-(10005, 101,  'exp3',   1,  'table',  NULL),
-(10006, 102,  'exp1',   2,  'flat',   'waveform'),
-(10007, 102,  'exp2',   2,  'flat',   'waveform'),
-(10008, 102,  'exp3',   2,  'flat',   'waveform');
+(100, 10000, 'exp1',   1,  'table',  'good set'),
+(100, 10001, 'exp2',   1,  'table',  'foo'),
+(100, 10002, 'exp3',   1,  'table',  'bar'),
+(101, 10003, 'exp1',   1,  'table',  NULL),
+(101, 10004, 'exp2',   1,  'table',  NULL),
+(101, 10005, 'exp3',   1,  'table',  NULL),
+(102, 10006, 'exp1',   2,  'flat',   'waveform'),
+(102, 10007, 'exp2',   2,  'flat',   'waveform'),
+(102, 10008, 'exp3',   2,  'flat',   'waveform');
 
 INSERT INTO flat_file VALUES
 (1, 10006,  '~/project3/waveform1.csv',  1, TRUE, ','),
@@ -63,3 +63,8 @@ INSERT INTO permissions VALUES
 (110,   'asmith',   'owner',  7),
 (110,   'sgummy',   'group',  4),
 (111,   'asmith',   'owner',  7);
+
+INSERT INTO data_table VALUES 
+(102, 10006, 'jbrown10210006'),
+(102, 10007, 'jbrown10210007'),
+(102, 10008, 'jbrown10210008');

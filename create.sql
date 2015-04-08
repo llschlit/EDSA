@@ -16,7 +16,8 @@ CREATE TABLE project (
   notes         text,
 
   PRIMARY KEY (proj_id),
-  FOREIGN KEY (creator) REFERENCES edsa_user(usf_uid)
+  FOREIGN KEY (creator) REFERENCES edsa_user(usf_uid),
+  CONSTRAINT creator_proj_unq UNIQUE (creator, proj_title)
 );
 
 CREATE TABLE file_type (
@@ -37,8 +38,8 @@ CREATE TABLE data_type (
 CREATE TYPE storage_type AS ENUM ('flat','table');
 
 CREATE TABLE experiment (
-  exp_id        integer NOT NULL,
   proj_id       integer NOT NULL,
+  exp_id        integer NOT NULL,
   exp_title     char(20) NOT NULL,
   d_type        integer,
   storage_type  storage_type,
@@ -48,6 +49,9 @@ CREATE TABLE experiment (
   FOREIGN KEY (proj_id) REFERENCES project(proj_id),
   FOREIGN KEY (d_type) REFERENCES data_type(dt_id)
 );
+-- add a constraint/trigger of some kind to make sure that the exp 
+-- titles are unique within each project, so the combination of 
+-- proj_title and exp_title will be unique for the entire db
 
 CREATE TABLE flat_file (
   ff_id         integer NOT NULL, 
@@ -88,4 +92,14 @@ CREATE TABLE permissions (
   FOREIGN KEY (proj_id) REFERENCES project(proj_id),
   FOREIGN KEY (usf_uid) REFERENCES edsa_user(usf_uid),
   FOREIGN KEY (p_type) REFERENCES permission_type(code)
+);
+
+CREATE TABLE data_table (
+  proj_id       integer NOT NULL,
+  exp_id        integer NOT NULL,
+  table_name    char(30) NOT NULL,
+
+  PRIMARY KEY (proj_id, exp_id, table_name),
+  FOREIGN KEY (proj_id) REFERENCES project(proj_id),
+  FOREIGN KEY (exp_id) REFERENCES experiment(exp_id)
 );

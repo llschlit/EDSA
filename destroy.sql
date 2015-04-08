@@ -1,4 +1,5 @@
 DROP TABLE flat_file CASCADE;
+DROP TABLE data_table CASCADE;
 DROP TABLE experiment CASCADE;
 DROP TYPE storage_type;
 DROP TABLE permissions CASCADE;

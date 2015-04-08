@@ -56,6 +56,22 @@ getProjectInfo <- function(project) {
   result
 }
 
+getExpInfo <- function(exp, proj) {
+  con <-connect()
+  query <- fn$identity("SELECT a.exp_id, a.proj_id, a.exp_title, 
+                               b.dt_name AS data_type, a.storage_type, a.notes
+                        FROM experiment AS a
+                        JOIN data_type AS b
+                        ON a.d_type = b.dt_id 
+                        WHERE a.exp_title = '$exp' AND
+                              proj_id = (SELECT proj_id
+                                         FROM project
+                                         WHERE proj_title = '$proj');")
+  result <- dbGetQuery(con, query)
+  dbDisconnect(con)
+  result
+}
+
 getProjExp <- function(project) {
   con <-connect()
   query <- fn$identity("SELECT exp_title  
