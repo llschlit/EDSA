@@ -45,9 +45,8 @@ loadXY <- function(dsTitle) {
   xy
 }
 
-
 loadDSInfo <- function(dsTitle) {
-  con <- connect()
+  con   <- connect()
   query <- fn$identity("SELECT y.* 
                         FROM (SELECT b.proj_id, a.* 
                               FROM data_set AS a 
@@ -61,17 +60,17 @@ loadDSInfo <- function(dsTitle) {
                        ")
   result <- dbGetQuery(con, query)
   dbDisconnect(con)
-  dsData <- data.frame('proj_id' = as.numeric(result$proj_id), 
-                       'exp_id' = as.numeric(result$exp_id),
-                       'ds_id' = as.numeric(result$ds_id), 
-                       'ds_title' = toString(result$ds_title),
-                       'd_type' = as.numeric(result$d_type),
+  dsData <- data.frame('proj_id'      = as.numeric(result$proj_id), 
+                       'exp_id'       = as.numeric(result$exp_id),
+                       'ds_id'        = as.numeric(result$ds_id), 
+                       'ds_title'     = toString(result$ds_title),
+                       'd_type'       = as.numeric(result$d_type),
                        'storage_type' = toString(result$storage_type),
-                       'location' = toString(result$location),
-                       'xunit' = toString(result$xunit),
-                       'yunit' = toString(result$yunit),
-                       'dt' = as.numeric(result$dt),
-                       'notes' = toString(result$notes))
+                       'location'     = toString(result$location),
+                       'xunit'        = toString(result$xunit),
+                       'yunit'        = toString(result$yunit),
+                       'dt'           = as.numeric(result$dt),
+                       'notes'        = toString(result$notes))
 }
 
 parseUnits <- function(s) {
@@ -103,3 +102,12 @@ parseUnits <- function(s) {
   }
 }
 
+loadDSColNames <- function(table) {
+  con <- connect()
+  query <- fn$identity("SELECT column_name
+                        FROM information_schema.columns
+                        WHERE table_name='$table';")
+  result <- dbGetQuery(con, query)
+  dbDisconnect(con)
+  result
+}

@@ -1,7 +1,7 @@
 
 shinyServer(function(input, output) {
-  output$projTitle <- renderText(paste("Proj: ", projTitle))
-  output$expTitle <- renderText(paste("Expr: ", expTitle))
+  output$projTitle <- renderText(paste("Project: ", projTitle))
+  output$expTitle <- renderText(paste("Experiment: ", expTitle))
   
   ds <- reactive({
     ds <- loadDSInfo(input$dsSelect)
@@ -25,9 +25,9 @@ shinyServer(function(input, output) {
   })
   
   y <- reactive ({
-      # convert list object into a vector
-      y <- c(do.call("cbind", wfm()[input$colChoice]))
-    })
+    # convert list object into a vector
+    y <- c(do.call("cbind", wfm()[input$colChoice]))
+  })
   
   output$dsSelect <- renderUI({
     list <- getWfmDS()

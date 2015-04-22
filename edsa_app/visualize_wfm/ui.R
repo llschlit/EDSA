@@ -1,12 +1,8 @@
 shinyUI(fluidPage(
   titlePanel(
-    h1(textOutput("projTitle"),
+    h1(textOutput("projTitle"), 
        textOutput("expTitle"),
-       style = "border-bottom: solid 1px; 
-                padding-bottom: 5px; 
-                padding-top: 0; 
-                margin-top: 0;
-                font-family: monospace")
+       style = "border-bottom: solid 1px; padding-bottom: 5px; margin-top: 0")
   ),
   
   sidebarLayout(
