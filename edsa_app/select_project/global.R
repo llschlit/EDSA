@@ -58,12 +58,9 @@ getProjectInfo <- function(project) {
 
 getExpInfo <- function(exp, proj) {
   con <-connect()
-  query <- fn$identity("SELECT a.exp_id, a.proj_id, a.exp_title, 
-                               b.dt_name AS data_type, a.storage_type, a.notes
-                        FROM experiment AS a
-                        JOIN data_type AS b
-                        ON a.d_type = b.dt_id 
-                        WHERE a.exp_title = '$exp' AND
+  query <- fn$identity("SELECT exp_id, proj_id, exp_title, notes
+                        FROM experiment
+                        WHERE exp_title = '$exp' AND
                               proj_id = (SELECT proj_id
                                          FROM project
                                          WHERE proj_title = '$proj');")
@@ -79,6 +76,53 @@ getProjExp <- function(project) {
                         WHERE proj_id IN (SELECT proj_id 
                                           FROM project 
                                           WHERE proj_title = '$project');")
+  result <- dbGetQuery(con, query)
+  dbDisconnect(con)
+  result
+}
+
+getExpDS <- function(exp, proj) {
+  con <- connect()
+  query <- fn$identity("SELECT y.ds_title
+                        FROM (SELECT * 
+                              FROM data_set AS a 
+                              JOIN experiment AS b 
+                              ON a.exp_id = b.exp_id
+                              WHERE b.exp_title = '$exp') AS y 
+                        JOIN project AS z 
+                        ON y.proj_id = z.proj_id
+                        WHERE z.proj_title = '$proj'
+                        ORDER BY substring(y.ds_title, '^[0-9]+')::int, substring(y.ds_title, '[0-9]*$');
+                       ")
+  result <- dbGetQuery(con, query)
+  dbDisconnect(con)
+  result
+}
+
+getDSInfo <- function(ds, exp, proj) {
+  con <- connect()
+  query <- fn$identity("SELECT foo.*
+                        FROM (SELECT  z.proj_id, y.exp_id, z.exp_title, 
+                                      y.ds_id, y.ds_title, y.dt_name, 
+                                      y.storage_type, y.location, y.xunit, 
+                                      y.yunit, y.dt, y.notes 
+                              FROM   (SELECT  a.exp_id, a.ds_id, a.ds_title, 
+                                              b.dt_name, a.storage_type, 
+                                              a.location, 
+                                              a.xunit, 
+                                              a.yunit, 
+                                              a.dt, a.notes
+                                      FROM data_set AS a 
+                                      JOIN data_type AS b
+                                      ON a.d_type = b.dt_id
+                                      WHERE ds_title = '$ds') AS y 
+                            JOIN experiment AS z 
+                            ON y.exp_id = z.exp_id
+                            WHERE exp_title = '$exp') AS foo
+                         JOIN project AS bar
+                         ON foo.proj_id = bar.proj_id 
+                         WHERE bar.proj_title = '$proj'
+                       ;")
   result <- dbGetQuery(con, query)
   dbDisconnect(con)
   result
